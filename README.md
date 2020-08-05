@@ -1,13 +1,11 @@
-# Project Name
+# Review and Ratings
 
-> Project description
+> This component encompasses the all of the rating aspects, a feed displaying two current reviews, an option to display more reviews, and an option to add a review.
 
 ## Related Projects
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+  - https://github.com/AwesomeDreamTeam/Overview
+  - https://github.com/AwesomeDreamTeam/related-items
 
 ## Table of Contents
 
@@ -17,7 +15,10 @@
 
 ## Usage
 
-> Some usage instructions
+> In two seprate terminals
+  start the server using "npm run start:server"
+
+  start react using "npm run react-dev"
 
 ## Requirements
 
