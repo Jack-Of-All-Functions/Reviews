@@ -1,17 +1,30 @@
 {
-  "name": "",
+  "name": "Reviews",
   "version": "",
-  "description": "",
-  "author": "",
+  "description": "Displays the reviews and ratings",
+  "author": "Angie",
   "license": "",
   "engines": {
     "node": ">=6.13.0"
   },
   "scripts": {
+    "react-dev": "webpack -d --watch",
+    "start:server": "nodemon server/server.js"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "axios": "^0.19.2",
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   }
 }
