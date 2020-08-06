@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from 'react-dom';
+import App from './components/App.jsx';
 //import axios from "axios";
 
 
 ReactDOM.render(
-  <p>Hello world from src index</p>,
+  <div>
+    <App />
+  </div>,
   document.getElementById('root')
 );
 
