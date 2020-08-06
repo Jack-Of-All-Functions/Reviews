@@ -1,6 +1,8 @@
 import React from 'react';
 import Rating from '@material-ui/lab/Rating';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { makeStyles } from '@material-ui/core/styles';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,13 +14,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function HalfRating() {
+export default function QuarterRatingRead(props) {
   const classes = useStyles();
+  const { userRating } = props;
 
   return (
     <div className={classes.root}>
-      <Rating name="half-rating" defaultValue={2.5} precision={0.5} />
-      <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
+      <Rating name="quater-rating-read" defaultValue={userRating} precision={0.25} emptyIcon={<StarBorderIcon fontSize="inherit" />} readOnly />
     </div>
   );
 }
+
+// QuarterRatingRead.propTypes = {
+//   userRating: PropTypes.object.isRequired,
+// }

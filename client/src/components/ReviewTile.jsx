@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CheckIcon from '@material-ui/icons/Check';
+import QuarterRatingRead from "./StarRatings.jsx";
 
 
 const useStyles = makeStyles({
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
     variant: 'h1',
     color: 'black',
     fontSize: 14,
-    fonteight: "fontWeightBold",
+    fontweight: "fontWeightBold",
   },
   username: {
     fontSize: 12,
@@ -38,17 +39,15 @@ var ReviewTile = function () {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Typography className={classes.username} color="textSecondary" gutterBottom>
-          <Grid container xs={12}>
-            <Grid xs={6} align="left">
-              stars go here
-            </Grid>
-            <Grid xs={6} align="right">
-              username, month DD, YYYY. <br />
+        <Grid container>
+          <Grid item xs={6} align="left">
+            < QuarterRatingRead userRating={2} />
+          </Grid>
+          <Grid item xs={6} align="right">
+            username, month DD, YYYY. <br />
               If the review purchased, Show Verified Purchaser
             </Grid>
-          </Grid>
-        </Typography>
+        </Grid>
         <Typography className={classes.summary} color="textSecondary" gutterBottom>
           <b>Review Summary, capped at 60 characters.</b>
         </Typography>
@@ -56,7 +55,7 @@ var ReviewTile = function () {
           The review body goes here. Must be at least 50 charaters long and no more than 1000. Initially only show the first 250 charaters.
         </Typography>
         <Typography className={classes.recommend} color="textSecondary">
-          <CheckIcon /> <p>I recommend this product</p>
+          <CheckIcon /> I recommend this product
         </Typography>
         <Typography variant="body2" component="p">
           Response from the seller

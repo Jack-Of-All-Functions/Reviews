@@ -12,40 +12,36 @@ class App extends React.Component {
 
   render () {
     return (
-      <Grid Container>
-        <Grid container xs={12}>
+      <div>
+        <Grid container className="title">
           Ratings and Reviews
         </Grid>
-        <Grid container >
-          <Grid container xs={3} >
+        <Grid container>
+          <Grid item xs={3} className="ratings">
             <OverallRating />
-            <Grid >
-              <grid>
-                5 stars
-                <br />
-                4 stars
-                <br />
-                3 stars
-                <br />
-                2 stars
-                <br />
-                1 stars
-                <br />
-              </grid>
-              <Grid>
-                size / comfort goes here
-              </Grid>
+            <Grid className="starGraph">
+              5 stars
+              <br />
+              4 stars
+              <br />
+              3 stars
+              <br />
+              2 stars
+              <br />
+              1 stars
+              <br />
+            </Grid>
+            <Grid className="size comfort">
+              size / comfort goes here
             </Grid>
           </Grid>
-          <Grid container xs={8}>
-            <Grid container xs={12}>
+          <Grid container item xs={8}>
+            <Grid container >
               <ReviewFeed />
             </Grid>
           </Grid>
-          <Grid item xs={8}>
-          </Grid>
         </Grid>
-      </Grid>
+      </div>
     )
   }
 }

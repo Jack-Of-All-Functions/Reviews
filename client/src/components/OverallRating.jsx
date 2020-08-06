@@ -10,7 +10,7 @@ class OverallRating extends React.Component {
 
   render() {
     return (
-      <Grid container xs={12}>
+      <Grid item xs={12}>
           this is the overall rating and % recommended
       </Grid>
     )
