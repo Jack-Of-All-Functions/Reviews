@@ -1,14 +1,38 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import OverallRating from './OverallRating.jsx'
-import ReviewFeed from './ReviewFeed.jsx'
-import { Grid, Paper } from "@material-ui/core";
+import axios from "axios";
+import OverallRating from './OverallRating.jsx';
+import Feed from './Feed.jsx';
+import { Grid } from "@material-ui/core";
+const url = "http://52.26.193.201:3000/reviews";
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      product_id: 1,
+      listIsLoading: true,
+      metaIsLoading: true,
+      list: {},
+      meta: {},
+    }
   }
+
+  componentDidMount() {
+    axios.get(url + `/${this.state.product_id}/list?count=100`)
+      .then((res) => {
+        this.setState({list: res.data})
+      })
+      .then(() => this.setState({listIsLoading: false}));
+
+    axios.get(url + `/${this.state.product_id}/meta?count=100`)
+      .then((res) => {
+        this.setState({meta: res.data})
+      })
+      .then(() => this.setState({listIsLoading: false}));
+
+  };
 
   render () {
     return (
@@ -37,7 +61,11 @@ class App extends React.Component {
           </Grid>
           <Grid container item xs={8}>
             <Grid container >
-              <ReviewFeed />
+              {(this.state.listIsLoading) ?
+              <p>loading</p>
+              :
+              <Feed data={this.state.list.results}/>
+              }
             </Grid>
           </Grid>
         </Grid>
