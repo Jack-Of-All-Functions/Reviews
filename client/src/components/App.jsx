@@ -6,7 +6,6 @@ import Feed from './Feed.jsx';
 import { Grid } from "@material-ui/core";
 const url = "http://52.26.193.201:3000/reviews";
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -30,7 +29,7 @@ class App extends React.Component {
       .then((res) => {
         this.setState({meta: res.data})
       })
-      .then(() => this.setState({listIsLoading: false}));
+      .then(() => this.setState({metaIsLoading: false}));
 
   };
 
@@ -38,11 +37,15 @@ class App extends React.Component {
     return (
       <div>
         <Grid container className="title">
-          Ratings and Reviews
+        Ratings & Reviews
         </Grid>
         <Grid container>
           <Grid item xs={3} className="ratings">
-            <OverallRating />
+            {(this.state.metaIsLoading) ?
+            <p> Loading Ratings </p>
+            :
+            <OverallRating meta={this.state.meta}/>
+            }
             <Grid className="starGraph">
               5 stars
               <br />
