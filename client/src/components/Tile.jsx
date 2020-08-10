@@ -1,6 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom"
-import { Grid, ButtonBase } from "@material-ui/core"
+import ReactDOM from "react-dom";
+import { Grid, ButtonBase } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -9,10 +9,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CheckIcon from '@material-ui/icons/Check';
 import { gray, blue } from '@material-ui/core/colors';
-
 import QuarterRatingRead from "./StarRatings.jsx";
 import moment from 'moment';
-
+import RenderReviewBody from './RenderReviewBody.jsx';
 
 const useStyles = makeStyles({
   root: {
@@ -85,10 +84,7 @@ var Tile = function (props) {
           </Typography>
           :
           <div>
-            <Typography>
-              {first250Char}...
-            </Typography>
-            <Button size="small">Continue Reading</Button>
+            <RenderReviewBody body={props.data.body}/>
           </div>
         }
         {/* who the user recommend */}

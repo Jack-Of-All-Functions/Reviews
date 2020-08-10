@@ -13,6 +13,7 @@ var average = function (ratings) {
     total += ratings[key]
   }
   var ave = sum  / total;
+  console.log(ave, ratings);
   return ave.toFixed(1)
 }
 
@@ -20,7 +21,6 @@ var percentRecommend = function (recommend) {
   var percent = recommend[1] / (recommend[0] + recommend[1]) * 100
   return percent.toFixed(0)
 }
-
 
 class OverallRating extends React.Component {
   constructor(props) {
@@ -32,21 +32,17 @@ class OverallRating extends React.Component {
     }
   }
 
-
-
   render() {
-    console.log(this.props.meta)
-    console.log(average(this.props.meta.ratings))
     return (
       <Grid container direction="column">
-        <Grid container item className="aveWithStars">
-          <Grid item xs={4} className="ave">
+        <Grid container item justify="space-between" className="aveWithStars">
+          <Grid item className="ave">
             <Typography className="overallRating" gutterBottom>
               {this.state.average}
             </Typography>
           </Grid>
-          <Grid item xs={8} className="stars">
-            <QuarterRatingRead userRating={3.3} />
+          <Grid item className="stars" >
+            <QuarterRatingRead userRating={this.state.average} />
           </Grid>
         </Grid>
         <Grid item className="recommend">
@@ -54,7 +50,6 @@ class OverallRating extends React.Component {
         </Grid>
         <Grid item className='barStats'>
           {Object.keys(this.state.meta.ratings).map((key, index) => {
-            console.log("from OR", key, ",", this.state.meta.ratings[key]);
             return ( <BarStat rating={key} key={index} /> )
             })
           }

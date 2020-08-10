@@ -21,7 +21,8 @@
     "express": "^4.17.1",
     "moment": "^2.27.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-spring": "^8.0.27"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",

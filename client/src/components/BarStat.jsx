@@ -1,14 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
 
 class BarStat extends React.Component {
-  render () {
-    //console.log("BS", this.state.props)
+  constructor(props) {
+    super(props);
+    this.state = {
+      // value: null,
+    };
+  }
+
+  render() {
     return (
       <div>
         hello
       </div>
-    )
+    );
   }
 }
 
