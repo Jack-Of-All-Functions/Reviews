@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Grid } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import OverallRating from './OverallRating.jsx';
 import Feed from './Feed.jsx';
 
@@ -10,18 +11,30 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      product_id: 5,
+      product_id: 4,
       listIsLoading: true,
       metaIsLoading: true,
-      list: {},
+      nubOfProducts: null,
+      list: [],
       meta: {},
+      sortBy: 'relevant'
     };
+
+    this.handleChangeSort = this.handleChangeSort.bind(this);
+  }
+
+  handleChangeSort(event) {
+    this.setState({sortBy: event.target.value})
+    const { list } = this.state
+    this.setState({
+      list: list.sort((a, b) => a.date > b.date)
+    })
   }
 
   componentDidMount() {
-    axios.get(`${url}/${this.state.product_id}/list?count=100`)
+    axios.get(`${url}/${this.state.product_id}/list?count=100&sort=${this.state.sortBy}`)
       .then((res) => {
-        this.setState({ list: res.data });
+        this.setState({ list: res.data.results, nubOfProducts: res.data.product });
       })
       .then(() => this.setState({ listIsLoading: false }));
 
@@ -33,6 +46,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state.list)
     return (
       <div>
         <Grid container className="title">
@@ -59,9 +73,23 @@ class App extends React.Component {
             </Grid>
           </Grid>
           <Grid container item xs={12} sm={8} md={9}>
+            {(this.state.listIsLoading) ? <p>loading</p> :
+              <Typography gutterBottom>
+                <b>{this.state.list.length}</b>
+                <b> reviews, sorted by </b>
+                <b>
+                <select value={this.state.sortBy} onChange={this.handleChangeSort}>
+                  <option value="relevent">relevance</option>
+                  <option value="helpful">helpful</option>
+                  <option value="newest">newest</option>
+                </select>
+                </b>
+              </Typography>
+            }
             <Grid container>
               {(this.state.listIsLoading)
-                ? <p>loading</p> : <Feed data={this.state.list.results} prod_id={this.state.product_id}/>}
+                ? <p>loading</p> :
+                <Feed data={this.state.list} prod_id={this.state.product_id} sortBy={this.state.sortBy} />}
             </Grid>
           </Grid>
         </Grid>

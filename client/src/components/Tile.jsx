@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import CheckIcon from '@material-ui/icons/Check';
 import { gray, blue } from '@material-ui/core/colors';
 import QuarterRatingRead from "./StarRatings.jsx";
+import ImgModal from './ImgModal.jsx';
 import moment from 'moment';
 import RenderReviewBody from './RenderReviewBody.jsx';
 
@@ -66,10 +67,11 @@ var Tile = function (props) {
       <CardContent>
         <Grid container className={classes.userLine}>
           <Grid item xs={6} align="left">
-            < QuarterRatingRead userRating={curData.rating} />
+
+            <QuarterRatingRead userRating={curData.rating} />
           </Grid>
           <Grid item xs={6} align="right" className={classes.username}>
-            {curData.reviewer_name}, {moment().format("MMM Do YYYY")} <br />
+            {curData.reviewer_name}, {moment(curData.date).format("MMM Do YYYY")} <br />
               If the review purchased, Show Verified Purchaser
             </Grid>
         </Grid>
@@ -95,6 +97,18 @@ var Tile = function (props) {
           :
           null
         }
+        {/* show thumbnail images */}
+        <Grid container alignItems='center' spacing={2} >
+          {(props.data.photos.length === 0) ? null : props.data.photos.map((photo, index) =>
+            {
+              return (
+                <Grid item container justify='center' xs={12} sm={4} md={2} key={index}>
+                  <img height={70} src={photo.url} alt="new" />
+                </Grid>
+              )
+            }
+          )}
+        </Grid>
         {/* Response from the server */}
         {(curData.response !== null) ?
           <Typography className={classes.response}>

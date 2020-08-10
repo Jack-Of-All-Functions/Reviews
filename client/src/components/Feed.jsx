@@ -10,22 +10,20 @@ class Feed extends React.Component {
     this.state = {
       reviews: this.props.data,
       prod_id: this.props.prod_id,
+      sortBy: this.props.sortBy,
     };
     this.createReview = this.createReview.bind(this);
+
   }
 
   createReview() {
-    console.log("clicked")
+    //console.log("clicked")
   }
 
   render() {
     //console.log(this.props)
     return (
       <div>
-        <Typography gutterBottom>
-          <b>{this.state.reviews.length}</b>
-          <b> reviews, still needs to be sorted</b>
-        </Typography>
         <div>
           {this.state.reviews.map((review, idx) => <Tile data={review} key={idx} />)}
         </div>

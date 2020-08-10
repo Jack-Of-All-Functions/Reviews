@@ -13,7 +13,6 @@ var average = function (ratings) {
     total += ratings[key]
   }
   var ave = sum  / total;
-  console.log(ave, ratings);
   return ave.toFixed(1)
 }
 

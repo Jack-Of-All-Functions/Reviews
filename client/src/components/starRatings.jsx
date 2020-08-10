@@ -20,11 +20,7 @@ export default function QuarterRatingRead(props) {
 
   return (
     <div className={classes.root}>
-      <Rating name="quater-rating-read" defaultValue={props.userRating} precision={0.25} emptyIcon={<StarBorderIcon fontSize="inherit" />} readOnly />
+      <Rating name="quater-rating-read" defaultValue={userRating} precision={0.25} emptyIcon={<StarBorderIcon fontSize="inherit" />} readOnly />
     </div>
   );
 }
-
-// QuarterRatingRead.propTypes = {
-//   userRating: PropTypes.object.isRequired,
-// }

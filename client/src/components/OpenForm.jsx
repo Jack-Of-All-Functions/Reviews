@@ -10,7 +10,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function OpenForm(props) {
   const [open, setOpen] = React.useState(false);
-  console.log(props)
 
   const handleClickOpen = () => {
     setOpen(true);
