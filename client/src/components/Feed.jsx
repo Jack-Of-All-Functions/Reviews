@@ -22,10 +22,17 @@ class Feed extends React.Component {
 
   render() {
     //console.log(this.props)
+    const cardStyle = {
+      border: "2px",
+      padding: "4px"
+    }
     return (
       <div>
         <div>
-          {this.state.reviews.map((review, idx) => <Tile data={review} key={idx} />)}
+          {this.state.reviews.map((review, idx) =>
+            <div key={idx} style={cardStyle}>
+              <Tile data={review}  />
+            </div>)}
         </div>
         <Button variant="outlined">
           MORE REVIEWS

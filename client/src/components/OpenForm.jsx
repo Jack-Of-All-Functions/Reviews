@@ -20,7 +20,7 @@ export default function OpenForm(props) {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Create Review
       </Button>
@@ -54,6 +54,6 @@ export default function OpenForm(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </React.Fragment>
   );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Button, Typography } from '@material-ui/core';
 
 class RenderReviewBody extends React.Component {
@@ -21,19 +21,19 @@ class RenderReviewBody extends React.Component {
   render() {
     return (this.state.showAll)
       ? (
-        <Typography>
+        <Fragment>
           {this.state.fullBody}
           <br />
           <Button size="small" onClick={this.toggleShowAll}>Show Less</Button>
-        </Typography>
+        </Fragment>
       )
       : (
-        <Typography>
+        <Fragment>
           {this.state.first250Char}
           ...
           <br />
           <Button size="small" onClick={this.toggleShowAll}>Continue Reading</Button>
-        </Typography>
+        </Fragment>
       );
   }
 }
