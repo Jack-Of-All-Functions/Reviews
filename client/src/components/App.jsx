@@ -1,52 +1,100 @@
-import React from "react";
-import ReactDOM from 'react-dom';
-import OverallRating from './OverallRating.jsx'
-import ReviewFeed from './ReviewFeed.jsx'
-import { Grid, Paper } from "@material-ui/core";
+import React from 'react';
+import axios from 'axios';
+import { Grid } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import OverallRating from './OverallRating.jsx';
+import Feed from './Feed.jsx';
+
+const url = 'http://52.26.193.201:3000/reviews';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      product_id: 4,
+      listIsLoading: true,
+      metaIsLoading: true,
+      nubOfProducts: null,
+      list: [],
+      meta: {},
+      sortBy: 'relevant'
+    };
+
+    this.handleChangeSort = this.handleChangeSort.bind(this);
   }
 
-  render () {
+  handleChangeSort(event) {
+    this.setState({sortBy: event.target.value})
+    const { list } = this.state
+    this.setState({
+      list: list.sort((a, b) => a.date > b.date)
+    })
+  }
+
+  componentDidMount() {
+    axios.get(`${url}/${this.state.product_id}/list?count=100&sort=${this.state.sortBy}`)
+      .then((res) => {
+        this.setState({ list: res.data.results, nubOfProducts: res.data.product });
+      })
+      .then(() => this.setState({ listIsLoading: false }));
+
+    axios.get(`${url}/${this.state.product_id}/meta?count=100`)
+      .then((res) => {
+        this.setState({ meta: res.data });
+      })
+      .then(() => this.setState({ metaIsLoading: false }));
+  }
+
+  render() {
+    console.log(this.state.list)
     return (
-      <Grid Container>
-        <Grid container xs={12}>
-          Ratings and Reviews
+      <div>
+        <Grid container className="title">
+          Ratings & Reviews
         </Grid>
-        <Grid container >
-          <Grid container xs={3} >
-            <OverallRating />
-            <Grid >
-              <grid>
-                5 stars
-                <br />
-                4 stars
-                <br />
-                3 stars
-                <br />
-                2 stars
-                <br />
-                1 stars
-                <br />
-              </grid>
-              <Grid>
-                size / comfort goes here
-              </Grid>
+        <Grid container>
+          <Grid item xs={12} sm={4} md={3} className="ratings">
+            {(this.state.metaIsLoading)
+              ? <p> Loading Ratings </p> : <OverallRating meta={this.state.meta} />}
+            <Grid className="starGraph">
+              5 stars
+              <br />
+              4 stars
+              <br />
+              3 stars
+              <br />
+              2 stars
+              <br />
+              1 stars
+              <br />
+            </Grid>
+            <Grid className="size comfort">
+              size / comfort goes here
             </Grid>
           </Grid>
-          <Grid container xs={8}>
-            <Grid container xs={12}>
-              <ReviewFeed />
+          <Grid container item xs={12} sm={8} md={9}>
+            {(this.state.listIsLoading) ? <p>loading</p> :
+              <Typography gutterBottom>
+                <b>{this.state.list.length}</b>
+                <b> reviews, sorted by </b>
+                <b>
+                <select value={this.state.sortBy} onChange={this.handleChangeSort}>
+                  <option value="relevent">relevance</option>
+                  <option value="helpful">helpful</option>
+                  <option value="newest">newest</option>
+                </select>
+                </b>
+              </Typography>
+            }
+            <Grid container>
+              {(this.state.listIsLoading)
+                ? <p>loading</p> :
+                <Feed data={this.state.list} prod_id={this.state.product_id} sortBy={this.state.sortBy} />}
             </Grid>
           </Grid>
-          <Grid item xs={8}>
-          </Grid>
         </Grid>
-      </Grid>
-    )
+      </div>
+    );
   }
 }
 
