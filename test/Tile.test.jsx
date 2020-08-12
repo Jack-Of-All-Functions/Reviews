@@ -9,6 +9,7 @@ beforeEach(() => {
   wrapper = shallow(<Tile />);
 })
 
-// test(``, () => {
-
-// });
+test(`Should contain the title 'Ratings & Reviews'`, () => {
+  const wrapper = shallow(<Tile />);
+  expect(wrapper.find('.title').text()).toBe('Ratings & Reviews');
+});
