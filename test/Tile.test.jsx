@@ -1,8 +1,15 @@
 import React from 'react';
-import App from '../client/src/components/App';
-
-import { configure, shallow } from 'enzyme';
+import axios from 'axios';
+import { Grid, jssPreset } from '@material-ui/core';
+import { createShallow, createMount, createRender } from '@material-ui/core/test-utils';
+import { configure, shallow, mount, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { ExpansionPanelActions } from '@material-ui/core';
+import renderer from 'react-test-renderer';
+import ReactTestUtils from 'react-dom/test-utils';
+import App from '../client/src/components/App.jsx';
+import Tile from '../client/src/components/Tile.jsx';
+
 configure({ adapter: new Adapter() });
 
 beforeEach(() => {

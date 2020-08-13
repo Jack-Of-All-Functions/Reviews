@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 const QuarterRatingRead = function (props) {
   const classes = useStyles();
   const { userRating } = props;
-  console.log('star', props);
 
   return (
     <div className={classes.root}>

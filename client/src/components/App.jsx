@@ -11,32 +11,22 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      product_id: 1,
+      product_id: 2,
       listIsLoading: true,
       metaIsLoading: true,
-      nubOfProducts: null,
-      prodDataIsLoading: true,
       list: [],
       meta: {},
       sortBy: 'relevant',
       prodData: {},
     };
 
-    this.handleChangeSort = this.handleChangeSort.bind(this);
-  }
-
-  handleChangeSort(event) {
-    this.setState({ sortBy: event.target.value })
-    const { list } = this.state
-    this.setState({
-      list: list.sort((a, b) => a.date > b.date)
-    })
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
     axios.get(`${url}/reviews/${this.state.product_id}/list?count=100&sort=${this.state.sortBy}`)
       .then((res) => {
-        this.setState({ list: res.data.results, nubOfProducts: res.data.product });
+        this.setState({ list: res.data.results });
       })
       .then(() => this.setState({ listIsLoading: false }));
 
@@ -49,23 +39,39 @@ class App extends React.Component {
     axios.get(`${url}/products/${this.state.product_id}`)
       .then((res) => {
         this.setState({ prodData: res.data });
-      })
-      .then(() => this.setState({ prodDataIsLoading: false }));
+      });
+  }
+
+  handleUpdate(event) {
+    let sort;
+    if (event) {
+      sort = event.target.value;
+    } else {
+      sort = this.state.sortBy;
+    }
+    this.setState({ listIsLoading: true, sortBy: sort });
+    setTimeout(() => {
+      axios.get(`${url}/reviews/${this.state.product_id}/list?count=100&sort=${sort}`)
+        .then((res) => {
+          this.setState({ list: res.data.results });
+        })
+        .then(() => this.setState({ listIsLoading: false }));
+    }, 250);
   }
 
   render() {
-    console.log("prod data", this.state.prodData)
     return (
       <div>
-        <Grid container className="title">
-          Ratings & Reviews
-        </Grid>
-        <Grid container>
-          <Grid item xs={12} sm={4} md={3} className="ratings">
-            {(this.state.metaIsLoading)
-              ? <p> Loading Ratings </p> : <OverallRating meta={this.state.meta} />}
-            <Grid className="starGraph">
-              5 stars
+        <Grid container direction="column">
+          <Grid item xs={12} className="title">
+            Ratings & Reviews
+          </Grid>
+          <Grid container spacing={5} direction="row">
+            <Grid item xs={12} sm={4} md={3} className="ratings">
+              {(this.state.metaIsLoading)
+                ? <p> Loading Ratings </p> : <OverallRating meta={this.state.meta} />}
+              <Grid className="starGraph">
+                5 stars
               <br />
               4 stars
               <br />
@@ -75,36 +81,38 @@ class App extends React.Component {
               <br />
               1 stars
               <br />
+              </Grid>
+              <Grid className="size comfort">
+                size / comfort goes here
+              </Grid>
             </Grid>
-            <Grid className="size comfort">
-              size / comfort goes here
-            </Grid>
-          </Grid>
-          <Grid container item xs={12} sm={8} md={9}>
-            {(this.state.listIsLoading) ? <p>loading</p>
-              : (
-                <Typography gutterBottom>
-                  <b>{this.state.list.length}</b>
-                  <b> reviews, sorted by </b>
-                  <b>
-                    <select value={this.state.sortBy} onChange={this.handleChangeSort}>
-                      <option value="relevent">relevance</option>
-                      <option value="helpful">helpful</option>
-                      <option value="newest">newest</option>
-                    </select>
-                  </b>
-                </Typography>
-              )}
-            <Grid container>
-              {(this.state.listIsLoading)
-                ? <p>loading</p>
+            <Grid container item xs={12} sm={8} md={9} spacing={5}>
+              {(this.state.listIsLoading) ? <p>loading</p>
                 : (
-                  <Feed
-                    data={this.state.list}
-                    sortBy={this.state.sortBy}
-                    prodData={this.state.prodData}
-                  />
+                  <Typography gutterBottom>
+                    <b>{this.state.list.length}</b>
+                    <b> reviews, sorted by </b>
+                    <b>
+                      <select value={this.state.sortBy} onChange={this.handleUpdate}>
+                        <option value="relevent">relevance</option>
+                        <option value="helpful">helpful</option>
+                        <option value="newest">newest</option>
+                      </select>
+                    </b>
+                  </Typography>
                 )}
+              <Grid container>
+                {(this.state.listIsLoading)
+                  ? <p>loading</p>
+                  : (
+                    <Feed
+                      data={this.state.list}
+                      sortBy={this.state.sortBy}
+                      prodData={this.state.prodData}
+                      handleUpdate={this.handleUpdate}
+                    />
+                  )}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
