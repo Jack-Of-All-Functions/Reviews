@@ -5,6 +5,7 @@ import { Grid, Box } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import OverallRating from './OverallRating.jsx';
 import Feed from './Feed.jsx';
+import Characteristics from './Characteristics.jsx';
 
 const url = 'http://52.26.193.201:3000';
 
@@ -73,8 +74,9 @@ class App extends React.Component {
                   {(this.state.metaIsLoading)
                     ? <p> Loading Ratings </p> : <BarStat ratings={this.state.meta} />}
                 </Grid>
-                <Grid className="size comfort">
-                  size / comfort goes here
+                <Grid item className="characteristics">
+                  {(this.state.metaIsLoading)
+                    ? <p> Loading Ratings </p> : <Characteristics meta={this.state.meta.characteristics} />}
                 </Grid>
               </Grid>
               <Grid container item xs={12} sm={8} md={9}>

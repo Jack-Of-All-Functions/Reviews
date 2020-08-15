@@ -12,7 +12,7 @@ export default function BarStat(props) {
 
   const numOfRatings = ratings['1'] + ratings['2'] + ratings['3'] + ratings['4'] + ratings['5'];
 
-  console.log(props, ratings, numOfRatings);
+  //console.log(props, ratings, numOfRatings);
 
   return (
     Object.keys(ratings).map((rating) => {
