@@ -1,130 +1,134 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Grid, ButtonBase } from "@material-ui/core";
+import React from 'react';
+import axios from 'axios';
+import { Grid, Button, ButtonBase } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CheckIcon from '@material-ui/icons/Check';
-import { gray, blue } from '@material-ui/core/colors';
-import QuarterRatingRead from "./StarRatings.jsx";
-import ImgModal from './ImgModal.jsx';
+import Link from '@material-ui/core/Link';
 import moment from 'moment';
+import QuarterRatingRead from './StarRatings.jsx';
+import ImgModal from './ImgModal.jsx';
 import RenderReviewBody from './RenderReviewBody.jsx';
-import { borders } from '@material-ui/system';
-
 
 const useStyles = makeStyles({
   root: {
-    width: "90%",
-    justify: "center",
-    padding: "10px",
-    borderBottom: "1px solid black",
+    width: '100%',
+    padding: '8px',
+    borderBottom: '1px solid black',
+    display: 'flex',
+    flexGrow: '1',
   },
   summary: {
     variant: 'h1',
     color: 'black',
-    fontSize: 14,
-    fontweight: "fontWeightBold",
-
   },
   username: {
-    fontSize: 12,
-    color: "gray",
-
+    fontSize: 10,
+    color: 'gray',
   },
   recommend: {
-    color: "gray",
-    display: "flex",
-    alignItems: "center",
+    margin: '8px 0px',
+    color: 'gray',
+    display: 'flex',
+    alignItems: 'center',
   },
   helpful: {
-    color: "gray",
-    display: "flex",
-    alignItems: "center",
+    margin: '8px 0px',
+    color: 'gray',
+    display: 'flex',
   },
   body: {
-    padding: "10px 0px",
-    alignItems: "center",
+    // padding: '10px 0px',
+    justifyContent: 'flex-start',
   },
   response: {
-    margin: "10px 0px",
+    margin: '8px 0px',
     backgroundColor: '#F5F5F5',
-    color: "black",
+    color: 'black',
   },
   userLine: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
 });
 
-
-var Tile = function (props) {
+const Tile = (props) => {
   const classes = useStyles();
-  const curData = props.data;
-  const first250Char = curData.body.slice(0, 249);
+  const { data } = props;
+  //console.log('props', props);
 
+  function updateHelpful(event) {
+    axios.put(`http://52.26.193.201:3000/reviews/helpful/${data.review_id}`)
+      .then(props.handleUpdate());
+  }
+  function updateReport() {
+    axios.put(`http://52.26.193.201:3000/reviews/report/${data.review_id}`)
+      .then(props.handleUpdate());
+  }
   return (
-    <div className={classes.root}>
-      <Grid container className={classes.userLine}>
+    <Grid container className={classes.root}>
+      <Grid container item className={classes.userLine}>
         <Grid item xs={6} align="left">
-
-          <QuarterRatingRead userRating={curData.rating} />
+          <QuarterRatingRead userRating={data.rating} />
         </Grid>
         <Grid item xs={6} align="right" className={classes.username}>
-          {curData.reviewer_name}, {moment(curData.date).format("MMM Do YYYY")} <br />
-              If the review purchased, Show Verified Purchaser
-            </Grid>
-      </Grid>
-      <Typography className={classes.summary} gutterBottom>
-        <b>{curData.summary}</b>
-      </Typography>
-
-      {/* Default: display 250 chars of the body */}
-      {(curData.body.length <= 250) ?
-        <Typography className={classes.body}>
-          {curData.body}
-        </Typography>
-        :
-        <Typography className={classes.body}>
-          <RenderReviewBody body={props.data.body} />
-        </Typography>
-      }
-      {/* who the user recommend */}
-      {(curData.recommend === 1) ?
-        <Typography className={classes.recommend}>
-          <CheckIcon /> I recommend this product
+          <Typography className={classes.username}>
+            {data.reviewer_name}, {moment(data.date).format('MMM Do YYYY')}
           </Typography>
-        :
-        null
-      }
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography className={classes.summary} gutterBottom>
+          <b>{data.summary}</b>
+        </Typography>
+      </Grid>
+      <Grid item xs={12} className={classes.body}>
+        {/* Default: display 250 chars of the body */}
+        {(data.body.length <= 250)
+          ? (
+            <Typography className={classes.body}>
+              {data.body}
+            </Typography>
+          ) : (
+            <Typography className={classes.body}>
+              <RenderReviewBody body={data.body} />
+            </Typography>
+          )}
+      </Grid>
+      <Grid item xs={12}>
+        {/* who the user recommend */}
+        {(data.recommend === 1)
+          ? (
+            <Typography className={classes.recommend}>
+              <CheckIcon /> I recommend this product
+            </Typography>
+          ) : null }
+      </Grid>
       {/* show thumbnail images */}
-      <Grid container alignItems='center' spacing={2} >
-        {(props.data.photos.length === 0) ? null : props.data.photos.map((photo, index) => {
-          return (
-            <Grid item container justify='center' xs={12} sm={4} md={2} key={index}>
-              <img height={70} src={photo.url} alt="new" />
-            </Grid>
-          )
-        }
-        )}
+      <Grid container alignItems='center' spacing={2}>
+        {(data.photos.length === 0) ? null : data.photos.map((photo, index) => (
+          <Grid item container justify='center' xs={12} sm={4} md={2} key={index}>
+            <img height={70} src={photo.url} alt="new" />
+          </Grid>
+        ))}
       </Grid>
       {/* Response from the server */}
-      {(curData.response !== null) ?
-        <Typography className={classes.response}>
-          <b>Response from seller</b> <br />
-          {curData.response}
+      <Grid item xs={12}>
+        {(data.response !== null)
+          ? (
+            <Typography className={classes.response}>
+              <b>Response from seller</b> <br />
+              {data.response}
+            </Typography>
+          ) : null }
+      </Grid>
+      <Grid item xs={12}>
+        <Typography className={classes.helpful}>
+          Helpful?<span>&nbsp;</span><Link underlineHover onClick={updateHelpful} style={{ cursor: 'pointer' }}>Yes</Link><span>&nbsp;</span>({data.helpfulness}) | ( <Link underlineHover onClick={updateReport} style={{ cursor: 'pointer' }}> Report </Link> )
         </Typography>
-        :
-        null
-      }
-      <Grid item>
-        Helpful? <ButtonBase >Yes</ButtonBase> ({curData.helpfulness})
-        </Grid>
-    </div>
+      </Grid>
+    </Grid>
   );
-}
+};
 
 export default Tile;
