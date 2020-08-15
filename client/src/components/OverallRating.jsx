@@ -47,11 +47,9 @@ class OverallRating extends React.Component {
           {percentRecommend(this.state.meta.recommended)}
           % of reviewers recommend this product
         </Grid>
-        <Grid item className='barStats'>
-          {Object.keys(this.state.meta.ratings).map((key, index) => {
-            return ( <BarStat rating={key} key={index} /> )
-          })}
-        </Grid>
+        {/* <Grid item className="barStats">
+          <BarStat ratings={this.state.meta.ratings} />
+        </Grid> */}
       </Grid>
     );
   }

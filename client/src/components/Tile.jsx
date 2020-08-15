@@ -12,41 +12,37 @@ import RenderReviewBody from './RenderReviewBody.jsx';
 
 const useStyles = makeStyles({
   root: {
-    width: '90%',
-    justify: 'center',
-    padding: '10px',
+    width: '100%',
+    padding: '8px',
     borderBottom: '1px solid black',
+    display: 'flex',
+    flexGrow: '1',
   },
   summary: {
     variant: 'h1',
     color: 'black',
-    fontSize: 14,
-    fontweight: 'fontWeightBold',
-
   },
   username: {
-    fontSize: 12,
+    fontSize: 10,
     color: 'gray',
-
   },
   recommend: {
-    margin: '10px 0px',
+    margin: '8px 0px',
     color: 'gray',
     display: 'flex',
     alignItems: 'center',
   },
   helpful: {
-    margin: '10px 0px',
+    margin: '8px 0px',
     color: 'gray',
     display: 'flex',
-    alignItems: 'center',
   },
   body: {
-    padding: '10px 0px',
-    alignItems: 'center',
+    // padding: '10px 0px',
+    justifyContent: 'flex-start',
   },
   response: {
-    margin: '10px 0px',
+    margin: '8px 0px',
     backgroundColor: '#F5F5F5',
     color: 'black',
   },
@@ -61,46 +57,53 @@ const Tile = (props) => {
   const { data } = props;
   //console.log('props', props);
 
-  function updateHelpful() {
+  function updateHelpful(event) {
     axios.put(`http://52.26.193.201:3000/reviews/helpful/${data.review_id}`)
       .then(props.handleUpdate());
   }
   function updateReport() {
-    axios.put(`http://52.26.193.201:3000/reviews/report/${data.review_id}`);
+    axios.put(`http://52.26.193.201:3000/reviews/report/${data.review_id}`)
+      .then(props.handleUpdate());
   }
   return (
-    <div className={classes.root}>
-      <Grid container className={classes.userLine}>
+    <Grid container className={classes.root}>
+      <Grid container item className={classes.userLine}>
         <Grid item xs={6} align="left">
-
           <QuarterRatingRead userRating={data.rating} />
         </Grid>
         <Grid item xs={6} align="right" className={classes.username}>
-          {data.reviewer_name}, {moment(data.date).format('MMM Do YYYY')}
+          <Typography className={classes.username}>
+            {data.reviewer_name}, {moment(data.date).format('MMM Do YYYY')}
+          </Typography>
         </Grid>
       </Grid>
-      <Typography className={classes.summary} gutterBottom>
-        <b>{data.summary}</b>
-      </Typography>
-
-      {/* Default: display 250 chars of the body */}
-      {(data.body.length <= 250)
-        ? (
-          <Typography className={classes.body}>
-            {data.body}
-          </Typography>
-        ) : (
-          <Typography className={classes.body}>
-            <RenderReviewBody body={data.body} />
-          </Typography>
-        )}
-      {/* who the user recommend */}
-      {(data.recommend === 1)
-        ? (
-          <Typography className={classes.recommend}>
-            <CheckIcon /> I recommend this product
-          </Typography>
-        ) : null }
+      <Grid item xs={12}>
+        <Typography className={classes.summary} gutterBottom>
+          <b>{data.summary}</b>
+        </Typography>
+      </Grid>
+      <Grid item xs={12} className={classes.body}>
+        {/* Default: display 250 chars of the body */}
+        {(data.body.length <= 250)
+          ? (
+            <Typography className={classes.body}>
+              {data.body}
+            </Typography>
+          ) : (
+            <Typography className={classes.body}>
+              <RenderReviewBody body={data.body} />
+            </Typography>
+          )}
+      </Grid>
+      <Grid item xs={12}>
+        {/* who the user recommend */}
+        {(data.recommend === 1)
+          ? (
+            <Typography className={classes.recommend}>
+              <CheckIcon /> I recommend this product
+            </Typography>
+          ) : null }
+      </Grid>
       {/* show thumbnail images */}
       <Grid container alignItems='center' spacing={2}>
         {(data.photos.length === 0) ? null : data.photos.map((photo, index) => (
@@ -110,19 +113,21 @@ const Tile = (props) => {
         ))}
       </Grid>
       {/* Response from the server */}
-      {(data.response !== null)
-        ? (
-          <Typography className={classes.response}>
-            <b>Response from seller</b> <br />
-            {data.response}
-          </Typography>
-        ) : null }
-      <Grid item>
+      <Grid item xs={12}>
+        {(data.response !== null)
+          ? (
+            <Typography className={classes.response}>
+              <b>Response from seller</b> <br />
+              {data.response}
+            </Typography>
+          ) : null }
+      </Grid>
+      <Grid item xs={12}>
         <Typography className={classes.helpful}>
-          Helpful?<span>&nbsp;</span><Link underlineHover onClick={updateHelpful}>Yes</Link><span>&nbsp;</span>({data.helpfulness}) | ( <Link underlineHover onClick={updateReport}> Report </Link> )
+          Helpful?<span>&nbsp;</span><Link underlineHover onClick={updateHelpful} style={{ cursor: 'pointer' }}>Yes</Link><span>&nbsp;</span>({data.helpfulness}) | ( <Link underlineHover onClick={updateReport} style={{ cursor: 'pointer' }}> Report </Link> )
         </Typography>
       </Grid>
-    </div>
+    </Grid>
   );
 };
 

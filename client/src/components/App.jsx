@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Grid } from '@material-ui/core';
+import BarStat from './BarStat.jsx';
+import { Grid, Box } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import OverallRating from './OverallRating.jsx';
 import Feed from './Feed.jsx';
@@ -11,16 +12,18 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      product_id: 2,
+      product_id: 5,
       listIsLoading: true,
       metaIsLoading: true,
       list: [],
       meta: {},
+      // numOfRatings: 0,
       sortBy: 'relevant',
       prodData: {},
     };
 
     this.handleUpdate = this.handleUpdate.bind(this);
+    // this.findNumOfMetaRatings = this.findNumOfMetaRatings.bind(this);
   }
 
   componentDidMount() {
@@ -43,12 +46,7 @@ class App extends React.Component {
   }
 
   handleUpdate(event) {
-    let sort;
-    if (event) {
-      sort = event.target.value;
-    } else {
-      sort = this.state.sortBy;
-    }
+    const sort = (event) ? event.target.value : this.state.sortBy;
     this.setState({ listIsLoading: true, sortBy: sort });
     setTimeout(() => {
       axios.get(`${url}/reviews/${this.state.product_id}/list?count=100&sort=${sort}`)
@@ -62,56 +60,52 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Grid container direction="column">
+        <Grid container>
           <Grid item xs={12} className="title">
             Ratings & Reviews
           </Grid>
-          <Grid container spacing={5} direction="row">
-            <Grid item xs={12} sm={4} md={3} className="ratings">
-              {(this.state.metaIsLoading)
-                ? <p> Loading Ratings </p> : <OverallRating meta={this.state.meta} />}
-              <Grid className="starGraph">
-                5 stars
-              <br />
-              4 stars
-              <br />
-              3 stars
-              <br />
-              2 stars
-              <br />
-              1 stars
-              <br />
+          <Grid container direction="column">
+            <Grid container spacing={3} direction="row">
+              <Grid item xs={12} sm={4} md={3} className="ratings">
+                {(this.state.metaIsLoading)
+                  ? <p> Loading Ratings </p> : <OverallRating meta={this.state.meta} />}
+                <Grid container direction="column">
+                  {(this.state.metaIsLoading)
+                    ? <p> Loading Ratings </p> : <BarStat ratings={this.state.meta} />}
+                </Grid>
+                <Grid className="size comfort">
+                  size / comfort goes here
+                </Grid>
               </Grid>
-              <Grid className="size comfort">
-                size / comfort goes here
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} sm={8} md={9} spacing={5}>
-              {(this.state.listIsLoading) ? <p>loading</p>
-                : (
-                  <Typography gutterBottom>
-                    <b>{this.state.list.length}</b>
-                    <b> reviews, sorted by </b>
-                    <b>
-                      <select value={this.state.sortBy} onChange={this.handleUpdate}>
-                        <option value="relevent">relevance</option>
-                        <option value="helpful">helpful</option>
-                        <option value="newest">newest</option>
-                      </select>
-                    </b>
-                  </Typography>
-                )}
-              <Grid container>
-                {(this.state.listIsLoading)
-                  ? <p>loading</p>
-                  : (
-                    <Feed
-                      data={this.state.list}
-                      sortBy={this.state.sortBy}
-                      prodData={this.state.prodData}
-                      handleUpdate={this.handleUpdate}
-                    />
-                  )}
+              <Grid container item xs={12} sm={8} md={9}>
+                <Grid item xs={12}>
+                  {(this.state.listIsLoading) ? <p>Loading</p>
+                    : (
+                      <Typography gutterBottom>
+                        <b>{this.state.list.length}</b>
+                        <b> reviews, sorted by </b>
+                        <b>
+                          <select value={this.state.sortBy} onChange={this.handleUpdate}>
+                            <option value="relevent">relevance</option>
+                            <option value="helpful">helpful</option>
+                            <option value="newest">newest</option>
+                          </select>
+                        </b>
+                      </Typography>
+                    )}
+                </Grid>
+                <Grid item xs={12}>
+                  {(this.state.listIsLoading)
+                    ? <p>loading</p>
+                    : (
+                      <Feed
+                        data={this.state.list}
+                        sortBy={this.state.sortBy}
+                        prodData={this.state.prodData}
+                        handleUpdate={this.handleUpdate}
+                      />
+                    )}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

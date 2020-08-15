@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,7 +9,6 @@ import Container from '@material-ui/core/Container';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -40,7 +39,7 @@ export default function OpenForm(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { register, handleSubmit } = useForm();
-
+  const [bodyLength, setBodyLength] = useState(0);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -62,10 +61,14 @@ export default function OpenForm(props) {
       });
   };
 
+  const handleBodyChange = (event) => {
+    setBodyLength(event.target.value.length);
+  };
+
   return (
     <>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Add Review
+        Add Review +
       </Button>
       <Dialog disableBackdropClick open={open} onClose={handleClose}>
         <DialogTitle id="title">Write A Review</DialogTitle>
@@ -175,13 +178,17 @@ export default function OpenForm(props) {
                 <TextField
                   inputRef={register({ minLength: 50, maxLength: 1000 })}
                   margin="normal"
+                  multiline
                   required
                   fullWidth
                   name="body"
                   label="Why did you like the product or not?"
                   id="body"
-
+                  onChange={handleBodyChange}
                 />
+                {(bodyLength < 50)
+                  ? <p>Minimum required characters left: {50 - bodyLength}</p>
+                  : <p>Minimum reached</p>}
                 <DialogContentText>
                   Name
                 </DialogContentText>
