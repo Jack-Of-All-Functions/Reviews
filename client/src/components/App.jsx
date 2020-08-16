@@ -13,18 +13,18 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      product_id: 5,
+      product_id: 1,
       listIsLoading: true,
       metaIsLoading: true,
       list: [],
       meta: {},
-      // numOfRatings: 0,
       sortBy: 'relevant',
       prodData: {},
+      filterByStarRating: null,
     };
 
     this.handleUpdate = this.handleUpdate.bind(this);
-    // this.findNumOfMetaRatings = this.findNumOfMetaRatings.bind(this);
+    this.handleFilterByStarRating = this.handleFilterByStarRating.bind(this);
   }
 
   componentDidMount() {
@@ -58,6 +58,12 @@ class App extends React.Component {
     }, 250);
   }
 
+  handleFilterByStarRating(event) {
+    this.setState({ filterByStarRating: Number(event.target.name) });
+    console.log("clicked", event.target.name);
+    event.preventDefault;
+  }
+
   render() {
     return (
       <div>
@@ -67,19 +73,19 @@ class App extends React.Component {
           </Grid>
           <Grid container direction="column">
             <Grid container spacing={3} direction="row">
-              <Grid item xs={12} sm={4} md={3} className="ratings">
+              <Grid item xs={12} md={4} className="ratings">
                 {(this.state.metaIsLoading)
                   ? <p> Loading Ratings </p> : <OverallRating meta={this.state.meta} />}
                 <Grid container direction="column">
                   {(this.state.metaIsLoading)
-                    ? <p> Loading Ratings </p> : <BarStat ratings={this.state.meta} />}
+                    ? <p> Loading Ratings </p> : <BarStat ratings={this.state.meta} handleFilter={this.handleFilterByStarRating} />}
                 </Grid>
                 <Grid item className="characteristics">
                   {(this.state.metaIsLoading)
                     ? <p> Loading Ratings </p> : <Characteristics meta={this.state.meta.characteristics} />}
                 </Grid>
               </Grid>
-              <Grid container item xs={12} sm={8} md={9}>
+              <Grid container item xs={12} md={8}>
                 <Grid item xs={12}>
                   {(this.state.listIsLoading) ? <p>Loading</p>
                     : (
@@ -104,6 +110,7 @@ class App extends React.Component {
                         data={this.state.list}
                         sortBy={this.state.sortBy}
                         prodData={this.state.prodData}
+                        filter={this.state.filterByStarRating}
                         handleUpdate={this.handleUpdate}
                       />
                     )}

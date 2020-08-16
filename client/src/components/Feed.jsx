@@ -34,7 +34,7 @@ class Feed extends React.Component {
       overflow: 'auto',
       maxHeight: '85vh',
     };
-  //console.log("feed", this.props, this.state);
+  console.log("feed", this.props, this.state);
 
     return (
       <Grid direction="column">

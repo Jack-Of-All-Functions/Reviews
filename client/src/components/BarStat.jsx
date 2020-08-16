@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, Link } from '@material-ui/core';
 
 export default function BarStat(props) {
   const ratings = {
@@ -17,9 +17,10 @@ export default function BarStat(props) {
   return (
     Object.keys(ratings).map((rating) => {
       const percent = `${(ratings[rating] / numOfRatings) * 100}%`;
+      const strRating = `${rating}`;
       return (
         <Grid item container display="flex" alignItems="center">
-          <Box>{rating} Stars</Box>
+          <Link onClick={props.handleFilter} style={{ cursor: 'pointer' }} name={strRating}>{rating} Stars</Link>
           <Box height="20" display="flex" p={1} flexGrow={1} bgcolor="background.paper">
             <Box p={1} height="20" width={percent} bgcolor="green" />
             <Box p={1} height="20" flexGrow={1} bgcolor="grey.300" />
