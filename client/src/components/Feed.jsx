@@ -10,7 +10,7 @@ class Feed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      reviews: this.props.data,
+      reviews: this.props.list,
       reviewsDisplayed: 2,
     };
     this.handleMoreReviews = this.handleMoreReviews.bind(this);
@@ -34,10 +34,10 @@ class Feed extends React.Component {
       overflow: 'auto',
       maxHeight: '85vh',
     };
-  console.log("feed", this.props, this.state);
+  console.log("feed", this.state.reviews);
 
     return (
-      <Grid direction="column">
+      <Grid container direction="column">
         <Grid style={feedOverflow} item xs={12}>
           {this.state.reviews.slice(0, this.state.reviewsDisplayed).map((review, idx) => (
             <div key={idx} style={cardStyle}>
@@ -66,7 +66,11 @@ class Feed extends React.Component {
               )
               : null
             )}
-          <OpenForm prodData={this.props.prodData} handleUpdate={this.props.handleUpdate} />
+          <OpenForm
+            prodData={this.props.prodData}
+            meta={this.props.meta}
+            handleUpdate={this.props.handleUpdate}
+          />
         </Grid>
       </Grid>
     );

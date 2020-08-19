@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box, Link } from '@material-ui/core';
+import { Grid, Box, Link, Typography } from '@material-ui/core';
 
 export default function BarStat(props) {
   const ratings = {
@@ -16,15 +16,18 @@ export default function BarStat(props) {
 
   return (
     Object.keys(ratings).map((rating) => {
-      const percent = `${(ratings[rating] / numOfRatings) * 100}%`;
+      const percent = (ratings[rating] / numOfRatings) * 100;
+      const percentString = `${percent}%`;
       const strRating = `${rating}`;
       return (
-        <Grid item container display="flex" alignItems="center">
+        <Grid item container display="flex" alignItems="center" flexWrap="nowrap">
           <Link onClick={props.handleFilter} style={{ cursor: 'pointer' }} name={strRating}>{rating} Stars</Link>
-          <Box height="20" display="flex" p={1} flexGrow={1} bgcolor="background.paper">
-            <Box p={1} height="20" width={percent} bgcolor="green" />
-            <Box p={1} height="20" flexGrow={1} bgcolor="grey.300" />
+          <Box display="flex" p={1} flexGrow={1} bgcolor="background.paper">
+            <Box my={1} height="85%" width={percentString} bgcolor="#FFB400" color="#FFB400" fontSize={12}>.</Box>
+            {/* <Box my={1} height="85%" width={percentString} bgcolor="#1e88e5" color="#1e88e5" fontSize={12}>.</Box> */}
+            <Box my={1} height="85%" flexGrow={1} bgcolor="#FFFFFF4D" textAlign="right" fontSize={12}>{ratings[rating]} reviews</Box>
           </Box>
+          <Box width="6%"><Typography>{Math.round(percent)}%</Typography></Box>
         </Grid>
       );
     })
