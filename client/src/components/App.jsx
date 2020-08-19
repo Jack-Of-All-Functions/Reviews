@@ -17,17 +17,10 @@ class App extends React.Component {
       listIsLoading: true,
       metaIsLoading: true,
       rawList: [],
-      listToRender: null,
       meta: {},
       sortBy: 'relevant',
       prodData: {},
-      filterByStarRating: {
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
-      },
+      filterByStarRating: [],
     };
 
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -82,35 +75,27 @@ class App extends React.Component {
     }
   }
 
-  // this needs attention!!!!
   handleFilterByStarRating(event) {
-    const clickedKey = event.target.name;
-    const updateFilter = {};
-    Object.keys(this.state.filterByStarRating).forEach((filterKey) => {
-      if (clickedKey === filterKey) {
-        updateFilter[`${filterKey}`] = !(this.state.filterByStarRating[`${filterKey}`]);
-      }
-      if (clickedKey !== filterKey) {
-        updateFilter[`${filterKey}`] = (this.state.filterByStarRating[`${filterKey}`]);
-      }
-    });
+    const { filterByStarRating } = this.state;
+    const clickedKey = Number(event.target.name);
+    const indexOfClicked = filterByStarRating.indexOf(clickedKey);
+    let updateFilter;
+    if (indexOfClicked === -1) {
+      updateFilter = [clickedKey, ...filterByStarRating];
+    } else if (indexOfClicked > -1) {
+      updateFilter = [];
+      filterByStarRating.forEach((el) => {
+        if (el !== clickedKey) {
+          updateFilter.push(el);
+        }
+      });
+    }
     this.setState({ filterByStarRating: updateFilter });
-    const filterBy = [];
-    Object.keys(updateFilter).forEach((starValue) => {
-      if (updateFilter[`${starValue}`]) {
-        filterBy.push(starValue);
-      }
-    });
-    console.log(updateFilter, filterBy, "rawList", this.state.rawList);
-    const filteredList = this.state.rawList.filter((review) => review.rating === 1);
-    console.log(filteredList);
-    const render = (filterBy.length === 0) ? this.state.rawList : filteredList;
-    this.setState({ listToRender: render });
     event.preventDefault;
   }
 
   render() {
-    //console.log("OG list", this.state.rawList);
+    const { meta, metaIsLoading, listIsLoading, rawList, sortBy, filterByStarRating } = this.state;
     return (
       <div>
         <Grid container style={{ padding: '10px' }}>
@@ -120,26 +105,35 @@ class App extends React.Component {
           <Grid container direction="column">
             <Grid container spacing={3} direction="row">
               <Grid item xs={12} sm={4} md={3} className="ratings">
-                {(this.state.metaIsLoading)
-                  ? <p> Loading Ratings </p> : <OverallRating meta={this.state.meta} />}
+                {(metaIsLoading)
+                  ? <p> Loading Ratings </p> : <OverallRating meta={meta} />}
                 <Grid container direction="column">
-                  {(this.state.metaIsLoading)
-                    ? <p> Loading Ratings </p> : <BarStat ratings={this.state.meta} handleFilter={this.handleFilterByStarRating} />}
+                  {(metaIsLoading)
+                    ? <p> Loading Ratings </p>
+                    :
+                    (
+                      <BarStat
+                        ratings={meta}
+                        handleFilter={this.handleFilterByStarRating}
+                        starFilters={this.state.filterByStarRating}
+                      />
+                    )
+                  }
                 </Grid>
                 <Grid item className="characteristics">
-                  {(this.state.metaIsLoading)
-                    ? <p> Loading Ratings </p> : <Characteristics meta={this.state.meta.characteristics} />}
+                  {(metaIsLoading)
+                    ? <p> Loading Ratings </p> : <Characteristics meta={meta.characteristics} />}
                 </Grid>
               </Grid>
               <Grid container item xs={12} sm={8} md={9}>
                 <Grid item xs={12}>
-                  {(this.state.listIsLoading) ? <p>Loading</p>
+                  {(listIsLoading) ? <p>Loading</p>
                     : (
                       <Typography gutterBottom>
-                        <b>{this.state.rawList.length}</b>
+                        <b>{rawList.length}</b>
                         <b> reviews, sorted by </b>
                         <b>
-                          <select value={this.state.sortBy} style={{ backgroundColor: '#FFFFFF4D', color: "white"}} onChange={this.handleUpdate}>
+                          <select value={sortBy} style={{ backgroundColor: '#FFFFFF4D', color: "white" }} onChange={this.handleUpdate}>
                             <option value="relevent">relevance</option>
                             <option value="helpful">helpful</option>
                             <option value="newest">newest</option>
@@ -149,15 +143,20 @@ class App extends React.Component {
                     )}
                 </Grid>
                 <Grid item xs={12}>
-                  {(this.state.listIsLoading)
+                  {(listIsLoading)
                     ? <p>loading</p>
                     : (
                       <Feed
-                        meta={this.state.meta.characteristics}
-                        list={this.state.listToRender || this.state.rawList}
-                        sortBy={this.state.sortBy}
+                        meta={meta.characteristics}
+                        list={
+                          (filterByStarRating.length === 0)
+                            ? rawList
+                            :
+                            (rawList.filter(review => filterByStarRating.includes(review.rating)))
+                        }
+                        sortBy={sortBy}
                         prodData={this.state.prodData}
-                        filter={this.state.filterByStarRating}
+                        filter={filterByStarRating}
                         handleUpdate={this.handleUpdate}
                       />
                     )}

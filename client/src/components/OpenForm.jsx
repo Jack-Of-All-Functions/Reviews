@@ -165,15 +165,13 @@ export default function OpenForm(props) {
                   Would you recommend this product?
                   <span style={{ color: 'red' }}>*</span>
                 </DialogContentText>
-                <RadioGroup row name="recommend" defaultValue="true" inputRef={register({ require: true })} required>
+                <RadioGroup row name="recommend" defaultValue="true">
                   <FormControlLabel
                     value="false"
                     control={<Radio required color="primary" />}
                     label="no"
                     name="recommend"
                     labelPlacement="bottom"
-                    inputRef={register({ require: true })}
-                    required
                   />
                   <FormControlLabel
                     value="true"
@@ -181,8 +179,6 @@ export default function OpenForm(props) {
                     label="yes"
                     labelPlacement="bottom"
                     name="recommend"
-                    inputRef={register({ require: true })}
-                    required
                   />
                 </RadioGroup>
                 {/* Characteristics */}

@@ -12,19 +12,16 @@ export default function BarStat(props) {
 
   const numOfRatings = ratings['1'] + ratings['2'] + ratings['3'] + ratings['4'] + ratings['5'];
 
-  //console.log(props, ratings, numOfRatings);
-
   return (
     Object.keys(ratings).map((rating) => {
       const percent = (ratings[rating] / numOfRatings) * 100;
       const percentString = `${percent}%`;
       const strRating = `${rating}`;
       return (
-        <Grid item container display="flex" alignItems="center" flexWrap="nowrap">
+        <Grid item container display="flex" alignItems="center">
           <Link onClick={props.handleFilter} style={{ cursor: 'pointer' }} name={strRating}>{rating} Stars</Link>
           <Box display="flex" p={1} flexGrow={1} bgcolor="background.paper">
             <Box my={1} height="85%" width={percentString} bgcolor="#FFB400" color="#FFB400" fontSize={12}>.</Box>
-            {/* <Box my={1} height="85%" width={percentString} bgcolor="#1e88e5" color="#1e88e5" fontSize={12}>.</Box> */}
             <Box my={1} height="85%" flexGrow={1} bgcolor="#FFFFFF4D" textAlign="right" fontSize={12}>{ratings[rating]} reviews</Box>
           </Box>
           <Box width="6%"><Typography>{Math.round(percent)}%</Typography></Box>

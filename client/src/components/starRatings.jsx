@@ -19,7 +19,7 @@ const QuarterRatingRead = function (props) {
 
   return (
     <div className={classes.root}>
-      <Rating name="quater-rating-read" defaultValue={userRating} precision={0.25} readOnly />
+      <Rating name="quater-rating-read" value={Number(userRating)} precision={0.25} readOnly />
     </div>
   );
 };

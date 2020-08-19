@@ -14,7 +14,7 @@ const theme = createMuiTheme({
     },
     background: {
       paper: '#303030',
-    }
+    },
   },
 
 });

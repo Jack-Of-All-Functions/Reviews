@@ -1,16 +1,16 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Tile from './Tile.jsx';
-import OpenForm from './OpenForm.jsx'
+import OpenForm from './OpenForm.jsx';
 
 class Feed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      reviews: this.props.list,
       reviewsDisplayed: 2,
     };
     this.handleMoreReviews = this.handleMoreReviews.bind(this);
@@ -22,10 +22,12 @@ class Feed extends React.Component {
   }
 
   handleViewAllReviews() {
-    this.setState({ reviewsDisplayed: this.state.reviews.length });
+    const { list } = this.props;
+    this.setState({ reviewsDisplayed: list.length });
   }
 
   render() {
+    const { list } = this.props;
     const cardStyle = {
       border: '1px',
       padding: '2px',
@@ -34,12 +36,12 @@ class Feed extends React.Component {
       overflow: 'auto',
       maxHeight: '85vh',
     };
-  console.log("feed", this.state.reviews);
+    //console.log('feed', list);
 
     return (
       <Grid container direction="column">
         <Grid style={feedOverflow} item xs={12}>
-          {this.state.reviews.slice(0, this.state.reviewsDisplayed).map((review, idx) => (
+          {list.slice(0, this.state.reviewsDisplayed).map((review, idx) => (
             <div key={idx} style={cardStyle}>
               <Tile
                 data={review}
@@ -50,21 +52,20 @@ class Feed extends React.Component {
           ))}
         </Grid>
         <Grid item xs={12}>
-          {(this.state.reviews.length > this.state.reviewsDisplayed && this.state.reviewsDisplayed <= 4) ?
-            (
+          {(list.length > this.state.reviewsDisplayed && this.state.reviewsDisplayed <= 4)
+            ? (
               <Button variant="outlined" color="primary" onClick={this.handleMoreReviews}>
                 MORE REVIEWS
               </Button>
             )
-            :
-            (
-              (this.state.reviews.length > this.state.reviewsDisplayed) ?
-              (
-              <Button variant="outlined" color="primary" onClick={this.handleViewAllReviews}>
-                View All REVIEWS
-              </Button>
-              )
-              : null
+            : (
+              (list.length > this.state.reviewsDisplayed)
+                ? (
+                  <Button variant="outlined" color="primary" onClick={this.handleViewAllReviews}>
+                    View All REVIEWS
+                  </Button>
+                )
+                : null
             )}
           <OpenForm
             prodData={this.props.prodData}

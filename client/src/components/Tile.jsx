@@ -126,7 +126,7 @@ const Tile = (props) => {
       </Grid>
       <Grid item xs={12}>
         <Typography className={classes.helpful}>
-          Helpful?<span>&nbsp;</span><Link underlineHover onClick={updateHelpful} style={{ cursor: 'pointer' }}>Yes</Link><span>&nbsp;</span>({helpful}) | ( <Link underlineHover onClick={updateReport} style={{ cursor: 'pointer' }}> Report </Link> )
+          Helpful?<span>&nbsp;</span><Link onClick={updateHelpful} style={{ cursor: 'pointer' }}>Yes</Link><span>&nbsp;</span>({helpful}) | ( <Link onClick={updateReport} style={{ cursor: 'pointer' }}> Report </Link> )
         </Typography>
       </Grid>
     </Grid>
