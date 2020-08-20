@@ -11,6 +11,20 @@ export default function BarStat(props) {
   };
 
   const numOfRatings = ratings['1'] + ratings['2'] + ratings['3'] + ratings['4'] + ratings['5'];
+  const { starFilters } = props;
+  console.log(starFilters);
+
+  const filterBreakDown = function(filter) {
+    if (filter.length === 0) {
+      return null;
+    } else if (filter.length === 1) {
+      return (
+        <Grid>
+          Showing {filter[0]} star ratings. <Link>See all reviews</Link>
+        </Grid>
+      )
+    }
+  };
 
   return (
     Object.keys(ratings).map((rating) => {
@@ -21,7 +35,7 @@ export default function BarStat(props) {
         <Grid item container display="flex" alignItems="center">
           <Link onClick={props.handleFilter} style={{ cursor: 'pointer' }} name={strRating}>{rating} Stars</Link>
           <Box display="flex" p={1} flexGrow={1} bgcolor="background.paper">
-            <Box my={1} height="85%" width={percentString} bgcolor="#FFB400" color="#FFB400" fontSize={12}>.</Box>
+            <Box my={1} height="85%" width={percentString} bgcolor="#FFB400" color="#FFB400" fontSize={12}>|</Box>
             <Box my={1} height="85%" flexGrow={1} bgcolor="#FFFFFF4D" textAlign="right" fontSize={12}>{ratings[rating]} reviews</Box>
           </Box>
           <Box width="6%"><Typography>{Math.round(percent)}%</Typography></Box>
