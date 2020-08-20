@@ -21,8 +21,8 @@ const useStyles = makeStyles({
   },
 });
 
-const SetHoverRating = function () {
-  const [value, setValue] = React.useState(null);
+const SetRating = function () {
+  const [value, setValue] = React.useState(3);
   const [hover, setHover] = React.useState(-1);
   const { register, handleSubmit } = useForm();
   const classes = useStyles();
@@ -47,3 +47,5 @@ const SetHoverRating = function () {
     </div>
   );
 };
+
+export default SetRating;

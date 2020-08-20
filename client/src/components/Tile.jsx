@@ -42,8 +42,9 @@ const useStyles = makeStyles({
   },
   response: {
     margin: '8px 0px',
-    backgroundColor: '#F5F5F5',
-    color: 'black',
+    backgroundColor: '#FFFFFF4D',
+    paddingLeft: '3px',
+
   },
   userLine: {
     display: 'flex',
@@ -55,18 +56,17 @@ const Tile = (props) => {
   const classes = useStyles();
   const { data } = props;
   const [helpful, setHelpful] = useState(data.helpfulness);
-  //console.log('props', props);
 
   function updateHelpful(event) {
-    //console.log()
     setHelpful(helpful + 1);
     axios.put(`http://52.26.193.201:3000/reviews/helpful/${data.review_id}`)
-      //.then(props.handleUpdate());
+    //.then(props.handleUpdate());
   }
   function updateReport() {
     axios.put(`http://52.26.193.201:3000/reviews/report/${data.review_id}`)
       .then(props.handleUpdate());
   }
+
   return (
     <Grid container className={classes.root}>
       <Grid container item className={classes.userLine}>
@@ -104,12 +104,12 @@ const Tile = (props) => {
             <Typography className={classes.recommend}>
               <CheckIcon /> I recommend this product
             </Typography>
-          ) : null }
+          ) : null}
       </Grid>
       {/* show thumbnail images */}
       <Grid container alignItems='center' spacing={2}>
-        {(data.photos.length === 0) ? null : data.photos.map((photo, index) => (
-          <Grid item container justify='center' xs={12} sm={4} md={2} key={index}>
+        {(data.photos.length === 0) ? null : data.photos.map((photo) => (
+          <Grid item container justify='center' xs={12} sm={4} md={2} key={photo.id}>
             <img height={70} src={photo.url} alt="new" />
           </Grid>
         ))}
@@ -118,11 +118,12 @@ const Tile = (props) => {
       <Grid item xs={12}>
         {(data.response !== null)
           ? (
-            <Typography className={classes.response}>
-              <b>Response from seller</b> <br />
+            <Typography className={classes.response} bgcolor="grey.300">
+              <b>Response from seller</b>
+              <br />
               {data.response}
             </Typography>
-          ) : null }
+          ) : null}
       </Grid>
       <Grid item xs={12}>
         <Typography className={classes.helpful}>

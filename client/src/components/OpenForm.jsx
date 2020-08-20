@@ -64,7 +64,7 @@ export default function OpenForm(props) {
   const { register, handleSubmit } = useForm();
   const [bodyLength, setBodyLength] = useState(0);
   const [summaryLength, setSummaryLength] = useState(0);
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState(3);
   const [hover, setHover] = React.useState(-1);
 
   const handleClickOpen = () => {
@@ -104,13 +104,11 @@ export default function OpenForm(props) {
         Add Review +
       </Button>
       {/* Setting up the dialog/modal */}
-      <Dialog disableBackdropClick open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+      <Dialog disableBackdropClick open={open} onClose={handleClose} maxWidth="md">
         <DialogTitle id="title">Write A Review</DialogTitle>
         <DialogContent>
           <Typography>
-            About the &nbsp
-            <b>{props.prodData.name}</b>
-            .
+            About the <b>{props.prodData.name}</b>.
           </Typography>
         </DialogContent>
         <DialogContent>
@@ -172,6 +170,8 @@ export default function OpenForm(props) {
                     label="no"
                     name="recommend"
                     labelPlacement="bottom"
+                    inputRef={register({ require: true })}
+                    required
                   />
                   <FormControlLabel
                     value="true"
@@ -179,11 +179,13 @@ export default function OpenForm(props) {
                     label="yes"
                     labelPlacement="bottom"
                     name="recommend"
+                    inputRef={register({ require: true })}
+                    required
                   />
                 </RadioGroup>
                 {/* Characteristics */}
                 {(!props.meta) ? null : Object.keys(props.meta).map((characteristic, idx) => (
-                  <Fragment key={idx.toString}>
+                  <Fragment key={`char is ${characteristic}`}>
                     <DialogContentText>
                       {characteristic}
                       <span style={{ color: 'red' }}>*</span>
@@ -193,16 +195,15 @@ export default function OpenForm(props) {
                       name={characteristic}
                       inputRef={register({ require: true })}
                       required
-                      noWrap
                     >
-                      <Grid container justify="space-between">
+                      <Grid container justify="space-evenly">
                         {characteristicLabels[characteristic].map((label, index) => (
-                          <Tooltip title={label} placement="top" arrow key={index.toString}>
+                          <Tooltip title={label} placement="top" arrow key={`char label: ${label}`}>
                             <FormControlLabel
                               value={`${index + 1}`}
                               control={<Radio required color="primary" />}
                               label={(index === 0) ? characteristicTags[characteristic][0] : (index === 4) ? characteristicTags[characteristic][1] : null}
-                              name={props.meta[characteristic].id}
+                              name={JSON.stringify(props.meta[characteristic].id)}
                               inputRef={register({ require: true })}
                               required
                               labelPlacement="bottom"
