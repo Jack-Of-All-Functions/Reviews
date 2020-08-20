@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Grid, Button, ButtonBase } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,7 +20,6 @@ const useStyles = makeStyles({
   },
   summary: {
     variant: 'h1',
-    color: 'black',
   },
   username: {
     fontSize: 10,
@@ -55,11 +54,14 @@ const useStyles = makeStyles({
 const Tile = (props) => {
   const classes = useStyles();
   const { data } = props;
+  const [helpful, setHelpful] = useState(data.helpfulness);
   //console.log('props', props);
 
   function updateHelpful(event) {
+    //console.log()
+    setHelpful(helpful + 1);
     axios.put(`http://52.26.193.201:3000/reviews/helpful/${data.review_id}`)
-      .then(props.handleUpdate());
+      //.then(props.handleUpdate());
   }
   function updateReport() {
     axios.put(`http://52.26.193.201:3000/reviews/report/${data.review_id}`)
@@ -124,7 +126,7 @@ const Tile = (props) => {
       </Grid>
       <Grid item xs={12}>
         <Typography className={classes.helpful}>
-          Helpful?<span>&nbsp;</span><Link underlineHover onClick={updateHelpful} style={{ cursor: 'pointer' }}>Yes</Link><span>&nbsp;</span>({data.helpfulness}) | ( <Link underlineHover onClick={updateReport} style={{ cursor: 'pointer' }}> Report </Link> )
+          Helpful?<span>&nbsp;</span><Link onClick={updateHelpful} style={{ cursor: 'pointer' }}>Yes</Link><span>&nbsp;</span>({helpful}) | ( <Link onClick={updateReport} style={{ cursor: 'pointer' }}> Report </Link> )
         </Typography>
       </Grid>
     </Grid>
