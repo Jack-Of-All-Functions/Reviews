@@ -37,9 +37,8 @@ export default function Characteristics(props) {
     <>
       {Object.keys(props.meta).map((characteristic) => {
         const arrowLoc = `${(props.meta[characteristic].value / 5) * 100}%`;
-        //onsole.log(characteristic, arrowLoc);
         return (
-          <Grid item container xs={12} my={3} py={3} className={classes.tile}>
+          <Grid key={characteristic} item container xs={12} my={3} py={3} className={classes.tile}>
             <Grid item xs={12} mt={3}><b>{characteristic}</b></Grid>
             <Grid item xs={12}>
               <Typography
@@ -88,7 +87,7 @@ export default function Characteristics(props) {
             </Grid>
             <Grid item container sx={12} justify="space-between" style={{fontSize:12}}>
               {characteristicsDescriptions[characteristic].map((descriptor) => (
-                <Grid item>{descriptor}</Grid>
+                <Grid key={descriptor} item>{descriptor}</Grid>
               ))}
             </Grid>
           </Grid>

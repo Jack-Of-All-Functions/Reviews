@@ -13,7 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      product_id: 4,
+      product_id: 1,
       listIsLoading: true,
       metaIsLoading: true,
       rawList: [],
@@ -28,6 +28,7 @@ class App extends React.Component {
     this.getListAndSetState = this.getListAndSetState.bind(this);
     this.getMetaAndSetState = this.getMetaAndSetState.bind(this);
     this.getProdDataAndSetState = this.getProdDataAndSetState.bind(this);
+    this.resetFilter = this.resetFilter.bind(this);
   }
 
   componentDidMount() {
@@ -94,6 +95,10 @@ class App extends React.Component {
     event.preventDefault;
   }
 
+  resetFilter() {
+    this.setState({ filterByStarRating: [] });
+  }
+
   render() {
     const { meta, metaIsLoading, listIsLoading, rawList, sortBy, filterByStarRating } = this.state;
     return (
@@ -114,6 +119,7 @@ class App extends React.Component {
                     (
                       <BarStat
                         ratings={meta}
+                        resetFilter={this.resetFilter}
                         handleFilter={this.handleFilterByStarRating}
                         starFilters={this.state.filterByStarRating}
                       />

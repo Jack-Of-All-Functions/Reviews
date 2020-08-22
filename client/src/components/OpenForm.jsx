@@ -1,7 +1,9 @@
 import React, { useState, Fragment } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, TextField, Tooltip, FormControlLabel, Typography, Container, RadioGroup, Radio } from '@material-ui/core';
-import { Dialog, DialogContent, DialogContentText, DialogTitle, FormControl, Box, Grid } from '@material-ui/core';
+import {
+  Button, TextField, Tooltip, FormControlLabel, Typography, Container, RadioGroup, Radio,
+  Dialog, DialogContent, DialogContentText, DialogTitle, FormControl, Box, Grid,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
@@ -30,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     display: 'flex',
     alignItems: 'center',
+  },
+  char: {
+    borderBottom: 2,
   },
 }));
 
@@ -64,7 +69,7 @@ export default function OpenForm(props) {
   const { register, handleSubmit } = useForm();
   const [bodyLength, setBodyLength] = useState(0);
   const [summaryLength, setSummaryLength] = useState(0);
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState(3);
   const [hover, setHover] = React.useState(-1);
 
   const handleClickOpen = () => {
@@ -104,13 +109,11 @@ export default function OpenForm(props) {
         Add Review +
       </Button>
       {/* Setting up the dialog/modal */}
-      <Dialog disableBackdropClick open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+      <Dialog disableBackdropClick open={open} onClose={handleClose} maxWidth="md">
         <DialogTitle id="title">Write A Review</DialogTitle>
         <DialogContent>
           <Typography>
-            About the &nbsp
-            <b>{props.prodData.name}</b>
-            .
+            About the <b>{props.prodData.name}</b>.
           </Typography>
         </DialogContent>
         <DialogContent>
@@ -172,6 +175,8 @@ export default function OpenForm(props) {
                     label="no"
                     name="recommend"
                     labelPlacement="bottom"
+                    inputRef={register({ require: true })}
+                    required
                   />
                   <FormControlLabel
                     value="true"
@@ -179,11 +184,13 @@ export default function OpenForm(props) {
                     label="yes"
                     labelPlacement="bottom"
                     name="recommend"
+                    inputRef={register({ require: true })}
+                    required
                   />
                 </RadioGroup>
                 {/* Characteristics */}
                 {(!props.meta) ? null : Object.keys(props.meta).map((characteristic, idx) => (
-                  <Fragment key={idx.toString}>
+                  <Grid key={`char is ${characteristic}`} style={{ borderBottom: "1px solid grey" }}>
                     <DialogContentText>
                       {characteristic}
                       <span style={{ color: 'red' }}>*</span>
@@ -193,25 +200,26 @@ export default function OpenForm(props) {
                       name={characteristic}
                       inputRef={register({ require: true })}
                       required
-                      noWrap
                     >
-                      <Grid container justify="space-between">
+                      <Grid container justify="space-evenly">
                         {characteristicLabels[characteristic].map((label, index) => (
-                          <Tooltip title={label} placement="top" arrow key={index.toString}>
-                            <FormControlLabel
-                              value={`${index + 1}`}
-                              control={<Radio required color="primary" />}
-                              label={(index === 0) ? characteristicTags[characteristic][0] : (index === 4) ? characteristicTags[characteristic][1] : null}
-                              name={props.meta[characteristic].id}
-                              inputRef={register({ require: true })}
-                              required
-                              labelPlacement="bottom"
-                            />
-                          </Tooltip>
+                          <Grid item>
+                            <Tooltip title={label} placement="top" arrow key={`char label: ${label}`}>
+                              <FormControlLabel
+                                value={`${index + 1}`}
+                                control={<Radio required color="primary" />}
+                                label={(index === 0) ? characteristicTags[characteristic][0] : (index === 4) ? characteristicTags[characteristic][1] : null}
+                                name={JSON.stringify(props.meta[characteristic].id)}
+                                inputRef={register({ require: true })}
+                                required
+                                labelPlacement="bottom"
+                              />
+                            </Tooltip>
+                          </Grid>
                         ))}
                       </Grid>
                     </RadioGroup>
-                  </Fragment>
+                  </Grid>
                 ))}
                 <DialogContentText>
                   Product Summary
