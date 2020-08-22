@@ -95,7 +95,7 @@ class App extends React.Component {
     event.preventDefault;
   }
 
-  resetFilter(event) {
+  resetFilter() {
     this.setState({ filterByStarRating: [] });
   }
 
