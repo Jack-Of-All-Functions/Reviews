@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const PORT = 3010;
+const PORT = 3003;
 const url = "http://52.26.193.201:3000";
 
 app.use(express.static(path.join(__dirname, "/../public")));
