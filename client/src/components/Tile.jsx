@@ -106,14 +106,6 @@ const Tile = (props) => {
             </Typography>
           ) : null}
       </Grid>
-      {/* show thumbnail images */}
-      <Grid container alignItems='center' spacing={2}>
-        {(data.photos.length === 0) ? null : data.photos.map((photo) => (
-          <Grid item container justify='center' xs={12} sm={4} md={2} key={photo.id}>
-            <img height={70} src={photo.url} alt="new" />
-          </Grid>
-        ))}
-      </Grid>
       {/* Response from the server */}
       <Grid item xs={12}>
         {(data.response !== null)

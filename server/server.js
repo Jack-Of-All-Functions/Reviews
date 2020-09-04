@@ -1,10 +1,13 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
 const express = require('express');
+const axios = require('axios');
+const path = require('path');
+const pool = require('../db/pool.js');
 
 const app = express();
-const path = require('path');
 
 const PORT = 3003;
-const db = require('../db/index.js');
 
 const url = 'http://52.26.193.201:3000';
 
@@ -19,18 +22,27 @@ app.use((req, res, next) => {
 
 app.get('/reviews/:product_id/list', (req, res) => {
   const { product_id } = req.params;
-  res.send(db.list(product_id));
+  let resp = [];
+  pool.query(`
+  SELECT * FROM reviews WHERE product_id = ${product_id};`,
+  (error, response) => {
+    if (error) {
+      console.log(error);
+    }
+    console.log(response.rows);
+    resp = response.rows;
+  });
+  setTimeout(() => {
+    res.send(resp);
+  }, 500);
 });
 
 app.get('/reviews/:product_id/meta', (req, res) => {
   const { product_id } = req.params;
-  res.send(db.meta(product_id));
 });
 
-app.get('/reviews/:product_id', (req, res) => {
+app.post('/reviews/:product_id', (req, res) => {
   const { product_id } = req.params;
-
-  res.send(db.post(product_id));
 });
 
 app.listen(PORT, () => {

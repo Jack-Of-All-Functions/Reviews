@@ -13,7 +13,7 @@ const Review = new mongoose.Schema(
   date: Date,
   reviewer_name: String,
   helpfulness: Number,
-  photos: Array,
+  photos: [String],
   characteristics: {},
 },
 );

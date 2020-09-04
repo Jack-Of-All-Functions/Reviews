@@ -1,4 +1,9 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+const faker = require('faker');
 const pool = require('./pool.js');
+
+console.log(Date.now());
 
 pool.query(
   `
@@ -7,31 +12,31 @@ pool.query(
   DROP TABLE IF EXISTS images;
   DROP TABLE IF EXISTS reviews;
   CREATE TABLE reviews (
-    id serial PRIMARY KEY,
+    review_id serial PRIMARY KEY,
     product_id INT NOT NULL,
     rating INT NOT NULL,
     summary VARCHAR ( 255 ) NOT NULL,
     recommend INT NOT NULL,
     response VARCHAR ( 255 ) NOT NULL,
     body VARCHAR ( 255 ) NOT NULL,
-    date TIMESTAMP NOT NULL,
+    date VARCHAR ( 255 ) NOT NULL,
     reviewer_name VARCHAR ( 255 ) NOT NULL,
     helpfulness INT NOT NULL
   );
   CREATE TABLE images (
-    id serial PRIMARY KEY,
+    image_id serial PRIMARY KEY,
     image_url VARCHAR ( 255 ) NOT NULL,
     review_id INT,
     CONSTRAINT fk_review
       FOREIGN KEY(review_id)
-        REFERENCES reviews(id)
+        REFERENCES reviews(review_id)
   );
   CREATE TABLE characteristics (
-    id serial PRIMARY KEY,
+    char_id serial PRIMARY KEY,
     char_name VARCHAR ( 255 ) NOT NULL
   );
   CREATE TABLE reviews_chars (
-    id serial PRIMARY KEY,
+    rev_char_id serial PRIMARY KEY,
     value VARCHAR ( 255 ) NOT NULL,
     review_id INT,
     char_id INT,
@@ -47,6 +52,5 @@ pool.query(
       console.log(err);
     }
     console.log(res);
-    pool.end();
   },
 );
