@@ -1,5 +1,6 @@
 ## MAC files ##
 .DS_Store
+/Users/richardlee/reviews/db/pool.js
 
 ## NPM ##
 npm
@@ -23,4 +24,4 @@ coverage
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 dist/
-
+sampleData/

@@ -38,11 +38,14 @@ class App extends React.Component {
   }
 
   getListAndSetState(sort) {
-    axios.get(`${url}/reviews/${this.state.product_id}/list?count=100&sort=${sort}`)
+    axios.get(`http://localhost:3003/reviews/${this.state.product_id}/list`)
       .then((res) => {
-        this.setState({ rawList: res.data.results });
+        console.log(res.data);
+        this.setState({ rawList: res.data });
       })
-      .then(() => this.setState({ listIsLoading: false }));
+      .then(() => {
+        this.setState({ listIsLoading: false });
+      });
   }
 
   getMetaAndSetState() {
@@ -100,7 +103,9 @@ class App extends React.Component {
   }
 
   render() {
-    const { meta, metaIsLoading, listIsLoading, rawList, sortBy, filterByStarRating } = this.state;
+    const {
+      meta, metaIsLoading, listIsLoading, rawList, sortBy, filterByStarRating,
+    } = this.state;
     return (
       <div>
         <Grid container style={{ padding: '10px' }}>
@@ -115,16 +120,14 @@ class App extends React.Component {
                 <Grid container direction="column">
                   {(metaIsLoading)
                     ? <p> Loading Ratings </p>
-                    :
-                    (
+                    : (
                       <BarStat
                         ratings={meta}
                         resetFilter={this.resetFilter}
                         handleFilter={this.handleFilterByStarRating}
                         starFilters={this.state.filterByStarRating}
                       />
-                    )
-                  }
+                    )}
                 </Grid>
                 <Grid item className="characteristics">
                   {(metaIsLoading)
@@ -139,7 +142,7 @@ class App extends React.Component {
                         <b>{rawList.length}</b>
                         <b> reviews, sorted by </b>
                         <b>
-                          <select value={sortBy} style={{ backgroundColor: '#FFFFFF4D', color: "white" }} onChange={this.handleUpdate}>
+                          <select value={sortBy} style={{ backgroundColor: '#FFFFFF4D', color: 'white' }} onChange={this.handleUpdate}>
                             <option value="relevent">relevance</option>
                             <option value="helpful">helpful</option>
                             <option value="newest">newest</option>
@@ -157,8 +160,9 @@ class App extends React.Component {
                         list={
                           (filterByStarRating.length === 0)
                             ? rawList
-                            :
-                            (rawList.filter(review => filterByStarRating.includes(review.rating)))
+                            : (rawList.filter(
+                              (review) => filterByStarRating.includes(review.rating)
+                            ))
                         }
                         sortBy={sortBy}
                         prodData={this.state.prodData}

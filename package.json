@@ -9,6 +9,8 @@
   },
   "scripts": {
     "react-dev": "webpack -d --watch",
+    "generate": "node db/schema.js && node db/fileWriter.js",
+    "seed": " node db/dbWriter.js",
     "start:server": "nodemon server/server.js",
     "test": "jest --coverage",
     "start": "node server/server.js"
@@ -23,7 +25,9 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "express": "^4.17.1",
+    "faker": "^5.1.0",
     "moment": "^2.27.0",
+    "pg": "^8.3.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.3.2",
