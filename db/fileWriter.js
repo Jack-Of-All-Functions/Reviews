@@ -39,7 +39,7 @@ const writeObj = (index) => {
 
 const review = {};
 
-for (let i = 1; i <= 100000; i += 1) {
+for (let i = 1; i <= 1000000; i += 1) {
   review[i] = writeObj(i);
 }
 fs.writeFile('./db/sampleData/sampleData.json', JSON.stringify(review), (err) => {

@@ -3,11 +3,9 @@
 const faker = require('faker');
 const pool = require('./pool.js');
 
-console.log(Date.now());
-
 pool.query(
   `
-  DROP TABLE IF EXISTS reviews_chars;
+  DROP TABLE IF EXISTS revschars;
   DROP TABLE IF EXISTS characteristics;
   DROP TABLE IF EXISTS images;
   DROP TABLE IF EXISTS reviews;
@@ -35,7 +33,7 @@ pool.query(
     char_id serial PRIMARY KEY,
     char_name VARCHAR ( 255 ) NOT NULL
   );
-  CREATE TABLE reviews_chars (
+  CREATE TABLE revschars (
     rev_char_id serial PRIMARY KEY,
     value VARCHAR ( 255 ) NOT NULL,
     review_id INT,
