@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 const faker = require('faker');
 const fs = require('fs');
-const pool = require('./pool.js');
+const pool = require('./sampleData/pool.js');
 
 const startTime = Date.now();
 

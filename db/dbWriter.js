@@ -2,7 +2,7 @@
 const fs = require('fs');
 
 const now = Date.now();
-const pool = require('./pool.js');
+const pool = require('./sampleData/pool.js');
 
 let fullData = {};
 fs.readFile('./db/sampleData/sampleData.json', 'utf8', async (err, data) => {

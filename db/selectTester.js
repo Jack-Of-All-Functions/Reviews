@@ -1,4 +1,4 @@
-const pool = require('./pool.js');
+const pool = require('./sampleData/pool.js');
 
 pool.query(`
     SELECT * FROM reviews WHERE product_id = 2;`,

@@ -3,7 +3,7 @@
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
-const pool = require('../db/pool.js');
+const pool = require('./sampleData/pool.js');
 
 const app = express();
 

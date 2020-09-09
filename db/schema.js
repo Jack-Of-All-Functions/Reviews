@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 const faker = require('faker');
-const pool = require('./pool.js');
+const pool = require('./sampleData/pool.js');
 
 pool.query(
   `
